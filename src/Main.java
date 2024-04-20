@@ -2,6 +2,7 @@ import java.util.Scanner;
 
 public class Main {
 
+    // The below function is used to display the tic-tac-toe board
     public static void displayBoard(char[][] board) {
         System.out.printf(
             """
@@ -16,6 +17,7 @@ public class Main {
         );
     }
 
+    // The below functions tells about the rules of the tic-tac-toe game
     public static void displayRules() {
         System.out.println(
                 """
@@ -33,6 +35,7 @@ public class Main {
         );
     }
 
+    // The below function tells about the controls regarding the game
     public static void displayControlRules() {
         System.out.println(
                 """
@@ -87,7 +90,7 @@ public class Main {
         for (char[] chars : board) {
             // Setting the variable to true
             boolean match = true;
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < chars.length; j++) {
                 if (chars[j] != character) {
                     match = false;
                     break;
@@ -97,11 +100,9 @@ public class Main {
             if (match) return match;
         }
 
-        // (0,0), (1,1), (2,2)
-        // (0,2), (1,1), (2,0)
-
         boolean match = true;
 
+        // The below function checks the diagonal from top-left to bottom-right(0,0), (1,1), (2,2)
         for(int i=0;i < board.length;i++) {
             if (board[i][i] != character) {
                 match = false;
@@ -113,6 +114,8 @@ public class Main {
 
         match = true;
 
+        // The below function checks the diagonal from top-right to bottom-left (0,2), (1,1), (2,0)
+
         for(int i=0;i<board.length;i++) {
             if (board[i][2-i] != character) {
                 return false;
@@ -123,11 +126,15 @@ public class Main {
     }
 
     public static void main(String[] args) {
+
         char[][] board = {{' ',' ',' '},{' ',' ',' '},{' ',' ',' '}};
         char character = 'X';
+
         Scanner scanner = new Scanner(System.in);
+
         int num = 0;
         int count = 0;
+
         while (true) {
             if(count == 9) {
                 displayBoard(board);
@@ -145,6 +152,7 @@ public class Main {
                     }
                 }
             }
+
             if(count%2==0) {
                 System.out.println("\nPlayer 1 turn 1\n");
                 character = 'X';
@@ -152,8 +160,10 @@ public class Main {
                 System.out.println("\nPlayer 2 turn 2\n");
                 character = 'O';
             }
+
             displayBoard(board);
             num = scanner.nextInt();
+
             if (num == 0) {
                 exitGame();
             } else if (num == 10) {
@@ -164,7 +174,15 @@ public class Main {
                 System.out.println("Enter a valid number from 1 to 9");
             } else {
                 if(fill(num,board,character) == 0) System.out.println("Enter valid number from 1 to 9");
-                else count++;
+                else {
+                    if (isWinner(board, character)) {
+                        if (character == 'X') System.out.println("Player 1 has won the game");
+                        else System.out.println("Player 2 has won the game");
+                        break;
+                    } else {
+                        count++;
+                    }
+                };
             }
         }
     }
